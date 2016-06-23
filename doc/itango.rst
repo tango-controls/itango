@@ -1,22 +1,25 @@
 .. highlight:: python
    :linenothreshold: 4
 
-.. _itango:
-
 ======
 ITango
 ======
 
-ITango is a PyTango CLI based on IPython_. It is designed to be used as an
+ITango_ is a PyTango CLI based on IPython_. It is designed to be used as an
 IPython profile.
 
-ITango is available since PyTango 7.1.2
+It is available since PyTango 7.1.2 and has been moved to a separate
+project since PyTango 9.2.0.
 
-You can start ITango by typing on the command line::
+You can start ITango_ by typing on the command line:
+
+.. sourcecode:: bash
 
     $ itango
 
-or the equivalent::
+or the equivalent:
+
+.. sourcecode:: bash
 
     $ ipython --profile=tango
 
@@ -24,15 +27,14 @@ and you should get something like this:
 
 .. image:: _static/itango00.png
     :align: center
-    :width: 75%
-
+    :width: 80%
 
 .. _itango-features:
 
 Features
 --------
 
-ITango works like a normal python console, but it gives you in addition a nice
+ITango_ works like a normal python console, but it gives you in addition a nice
 set of features from IPython_ like:
 
     - proper (bash-like) command completion
@@ -41,10 +43,10 @@ set of features from IPython_ like:
     - help system ( object? syntax, help(object))
     - persistently store your favorite variables
     - color modes
- 
-(for a complete list checkout the `IPython web page <http://ipython.org/>`_)
 
-Plus an additional set o Tango_ specific features:
+For a complete list checkout the `IPython web page <http://ipython.org/>`_.
+
+Plus an additional set of Tango_ specific features:
 
     - automatic import of Tango objects to the console namespace (:mod:`PyTango`
       module, :class:`~PyTango.DeviceProxy` (=Device),
@@ -77,19 +79,19 @@ Highlights
 Tab completion
 ~~~~~~~~~~~~~~
 
-ITango exports many tango specific objects to the console namespace.
+ITango_ exports many tango specific objects to the console namespace.
 These include:
 
     - the PyTango module itself
-      
+
       .. sourcecode:: itango
 
             ITango [1]: PyTango
             Result [1]: <module 'PyTango' from ...>
-                         
+
     - The :class:`DeviceProxy` (=Device), :class:`AttributeProxy` (=Attribute),
       :class:`Database` and :class:`Group` classes
-      
+
       .. sourcecode:: itango
 
             ITango [1]: De<tab>
@@ -97,29 +99,29 @@ These include:
 
             ITango [2]: Device
             Result [2]: <class 'PyTango._PyTango.DeviceProxy'>
-            
+
             ITango [3]: Device("sys/tg_test/1")
             Result [3]: DeviceProxy(sys/tg_test/1)
-                         
+
             ITango [4]: Datab<tab>
-            
+
             ITango [4]: Database
-            
+
             ITango [4]: Att<tab>
             Attribute       AttributeError  AttributeProxy
-            
-    - The Tango :class:`Database` object to which the itango session is 
+
+    - The Tango :class:`Database` object to which the itango session is
       currently connected
-      
+
       .. sourcecode:: itango
 
             ITango [1]: db
             Result [1]: Database(homer, 10000)
-    
+
 Device name completion
 ~~~~~~~~~~~~~~~~~~~~~~
 
-ITango knows the complete list of device names (including alias) for the current
+ITango_ knows the complete list of device names (including alias) for the current
 tango database. This means that when you try to create a new Device, by pressing
 <tab> you can see a context sensitive list of devices.
 
@@ -127,23 +129,23 @@ tango database. This means that when you try to create a new Device, by pressing
 
     ITango [1]: test = Device("<tab>
     Display all 3654 possibilities? (y or n) n
-    
+
     ITango [1]: test = Device("sys<tab>
     sys/access_control/1  sys/database/2        sys/tautest/1         sys/tg_test/1
-    
+
     ITango [2]: test = Device("sys/tg_test/1")
 
 Attribute name completion
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ITango can inspect the list of attributes in case the device server for the device
+ITango_ can inspect the list of attributes in case the device server for the device
 where the attribute resides is running.
 
 .. sourcecode:: itango
 
     ITango [1]: short_scalar = Attribute("sys<tab>
     sys/access_control/1/  sys/database/2/        sys/tautest/1/         sys/tg_test/1/
-    
+
     ITango [1]: short_scalar = Attribute("sys/tg_test/1/<tab>
     sys/tg_test/1/State                sys/tg_test/1/no_value
     sys/tg_test/1/Status               sys/tg_test/1/short_image
@@ -159,7 +161,7 @@ where the attribute resides is running.
     ...
 
     ITango [1]: short_scalar = Attribute("sys/tg_test/1/short_scalar")
-    
+
     ITango [29]: print test.read()
     DeviceAttribute[
     data_format = PyTango._PyTango.AttrDataFormat.SCALAR
@@ -184,13 +186,13 @@ Automatic tango object member completion
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 When you create a new tango object, (ex.: a device), itango is able to find out
-dynamically which are the members of this device (including tango commands 
+dynamically which are the members of this device (including tango commands
 and attributes if the device is currently running)
 
 .. sourcecode:: itango
 
     ITango [1]: test = Device("sys/tg_test/1")
-    
+
     ITango [2]: test.<tab>
     Display all 240 possibilities? (y or n)
     ...
@@ -200,7 +202,7 @@ and attributes if the device is currently running)
     test.Status                             test.get_attribute_config_ex
     test.SwitchStates                       test.get_attribute_list
     ...
-    
+
     ITango [2]: test.short_<tab>
     test.short_image        test.short_scalar       test.short_scalar_rww   test.short_spectrum
     test.short_image_ro     test.short_scalar_ro    test.short_scalar_w     test.short_spectrum_ro
@@ -214,17 +216,17 @@ and attributes if the device is currently running)
     test.DevFloat                 test.DevVarDoubleArray        test.DevVarULongArray
     test.DevLong                  test.DevVarDoubleStringArray  test.DevVarUShortArray
     test.DevShort                 test.DevVarFloatArray         test.DevVoid
-    test.DevString                test.DevVarLongArray          
+    test.DevString                test.DevVarLongArray
     test.DevULong                 test.DevVarLongStringArray
-    
+
     ITango [3]: test.DevDouble(56.433)  # old style: test.command_inout("DevDouble").
     Result [3]: 56.433
 
 Tango classes as :class:`DeviceProxy`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ITango exports all known tango classes as python alias to :class:`DeviceProxy`. 
-This way, if you want to create a device of class which you already know 
+ITango_ exports all known tango classes as python alias to :class:`DeviceProxy`.
+This way, if you want to create a device of class which you already know
 (say, Libera, for example) you can do:
 
 .. sourcecode:: itango
@@ -243,24 +245,26 @@ class 'Libera' will show up as possible completions.
     BO01/DI/BPM-02  BO01/DI/BPM-10  BO02/DI/BPM-07  BO03/DI/BPM-04  BO04/DI/BPM-01  BO04/DI/BPM-09
     BO01/DI/BPM-03  BO01/DI/BPM-11  BO02/DI/BPM-08  BO03/DI/BPM-05  BO04/DI/BPM-02  BO04/DI/BPM-10
     BO01/DI/BPM-04  BO02/DI/BPM-01  BO02/DI/BPM-09  BO03/DI/BPM-06  BO04/DI/BPM-03  BO04/DI/BPM-11
-    BO01/DI/BPM-05  BO02/DI/BPM-02  BO02/DI/BPM-10  BO03/DI/BPM-07  BO04/DI/BPM-04  
-    BO01/DI/BPM-06  BO02/DI/BPM-03  BO02/DI/BPM-11  BO03/DI/BPM-08  BO04/DI/BPM-05  
-    BO01/DI/BPM-07  BO02/DI/BPM-04  BO03/DI/BPM-01  BO03/DI/BPM-09  BO04/DI/BPM-06  
+    BO01/DI/BPM-05  BO02/DI/BPM-02  BO02/DI/BPM-10  BO03/DI/BPM-07  BO04/DI/BPM-04
+    BO01/DI/BPM-06  BO02/DI/BPM-03  BO02/DI/BPM-11  BO03/DI/BPM-08  BO04/DI/BPM-05
+    BO01/DI/BPM-07  BO02/DI/BPM-04  BO03/DI/BPM-01  BO03/DI/BPM-09  BO04/DI/BPM-06
     BO01/DI/BPM-08  BO02/DI/BPM-05  BO03/DI/BPM-02  BO03/DI/BPM-10  BO04/DI/BPM-07
 
     ITango [1]: bpm1 = Libera("BO01<tab>
     BO01/DI/BPM-01  BO01/DI/BPM-03  BO01/DI/BPM-05  BO01/DI/BPM-07  BO01/DI/BPM-09  BO01/DI/BPM-11
     BO01/DI/BPM-02  BO01/DI/BPM-04  BO01/DI/BPM-06  BO01/DI/BPM-08  BO01/DI/BPM-10
-    
+
     ITango [1]: bpm1 = Libera("BO01/DI/BPM-01")
 
 Customized device representation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-When you use ipython >= 0.11 with a Qt console frontend::
+When you use ipython >= 0.11 with a Qt console frontend:
+
+.. sourcecode:: bash
 
     $ itango qtconsole
-    
+
 typing a variable containing a tango device object followend by :kbd:`Enter`
 will present you with a customized representation of the object instead of the
 usual :func:`repr` :
@@ -269,7 +273,7 @@ usual :func:`repr` :
 
 You can customize the icon that itango displays for a specific device.
 The first thing to do is to copy the image file into
-:mod:`PyTango.ipython.resource` installation directory (if you don't have
+:mod:`itango.resource` installation directory (if you don't have
 permissions to do so, copy the image into a directory of your choosing
 and make sure it is accessible from itango).
 
@@ -278,10 +282,10 @@ add a new tango class property called *__icon*. You can do it with jive or, of
 course, with itango itself::
 
     db.put_class_property("Libera", dict(__icon="libera.png"))
-    
-    # if you placed your image in a directory different than PyTango.ipython.resource
+
+    # if you placed your image in a directory different than itango.resource
     # then, instead you have to specify the absolute directory
-    
+
     db.put_class_property("Libera", dict(__icon="/home/homer/.config/itango/libera.png"))
 
 If you need different images for different devices of the same class, you can
@@ -293,10 +297,10 @@ the class property value, if defined)::
 
 
 List tango devices, classes, servers
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ITango provides a set of magic functions (ipython lingo) that allow you to check
-for the list tango devices, classes and servers which are registered in the 
+ITango_ provides a set of magic functions (ipython lingo) that allow you to check
+for the list tango devices, classes and servers which are registered in the
 current database.
 
 .. sourcecode:: itango
@@ -323,7 +327,7 @@ current database.
                   expchan/BL99_Simu0DCtrl1/1                  BL99_0D8                 Pool/BL99      ZeroDExpChannel
                  expchan/BL99_UxTimerCtrl1/1                BL99_Timer                 Pool/BL99         CTExpChannel
     ...
-    
+
     ITango [1]: lsdevclass
     SimuCoTiCtrl                   TangoAccessControl             ZeroDExpChannel
     Door                           Motor                          DataBase
@@ -342,7 +346,7 @@ current database.
 Customized tango error message and introspection
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-ITango intercepts tango exceptions that occur when you do tango operations 
+ITango_ intercepts tango exceptions that occur when you do tango operations
 (ex.: write an attribute with a value outside the allowed limits) and tries to
 display it in a summarized, user friendly way.
 If you need more detailed information about the last tango error, you can use
@@ -387,17 +391,17 @@ command.
     switchdb homer:10005
     switchdb homer 10005
     switchdb homer
-    
+
     ITango [2]: db
     Database(homer, 10000)
-    
+
     ITango [3]: switchdb bart       # by default port is 10000
-    
+
     ITango [4]: db
     Database(bart, 10000)
-    
+
     ITango [5]: switchdb lisa 10005  # you can use spaces between host and port
-    
+
     ITango [6]: db
     Database(lisa, 10005)
 
@@ -411,7 +415,7 @@ Refreshing the database
 
 When itango starts up or when the database is switched, a query is made to the
 tango Database device server which provides all necessary data. This
-data is stored locally in a itango cache which is used to provide all the nice 
+data is stored locally in a itango cache which is used to provide all the nice
 features.
 If the Database server is changed in some way (ex: a new device server is registered),
 the local database cache is not consistent anymore with the tango database.
@@ -421,14 +425,14 @@ all tango information from the database.
 .. sourcecode:: itango
 
     ITango [1]: refreshdb
-    
+
 Storing your favorite tango objects for later usage
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. note::
     This feature is not available if you have installed IPython 0.11!
 
-Since version 7.1.2, :class:`DeviceProxy`, :class:`AttributeProxy` and 
+Since version 7.1.2, :class:`DeviceProxy`, :class:`AttributeProxy` and
 :class:`Database` became pickable.
 This means that they can be used by the IPython_ 'store' magic command (type
 'store?' on the itango console to get information on how to use this command).
@@ -438,16 +442,16 @@ then store these for the next time you startup IPython_ with itango profile.
 .. sourcecode:: itango
 
     ITango [1]: theta = Motor("BL99_M1")  # notice how we used tango alias
-    
+
     ITango [2]: store theta
     Stored 'theta' (DeviceProxy)
-    
+
     ITango [3]: Ctrl+D
-    
+
     (IPython session is closed and started again...)
 
     ITango [1]: store -r # in some versions of IPython you may need to do this ...
-    
+
     ITango [1]: print theta
     DeviceProxy(motor/bl99/1)
 
@@ -459,7 +463,7 @@ Adding itango to the ipython default profile
 
 Let's assume that you find itango so useful that each time you start ipython, you want
 itango features to be loaded by default.
-The way to do this is by editing your default ipython configuration file: 
+The way to do this is by editing your default ipython configuration file:
 
 1. On IPython <= 0.10
 
@@ -471,43 +475,43 @@ The way to do this is by editing your default ipython configuration file:
 
     .. sourcecode:: python
 
-        import PyTango.ipython
+        import itango
 
         def main():
 
             # uncomment if you want to get ipython -p sh behaviour
-            # without having to use command line switches  
+            # without having to use command line switches
             # import ipy_profile_sh
-            PyTango.ipython.init_ipython(ip, console=False)
+            itango.init_ipython(ip, console=False)
 
 2. On IPython > 0.10
 
     First you have to check which is the configuration directory being used by
     IPython. For this, in an IPython console type:
-    
+
     .. sourcecode:: itango
 
         ITango [1]: import IPython.utils.path
-        
+
         ITango [2]: IPython.utils.path.get_ipython_dir()
         <IPYTHON_DIR>
 
     now edit <IPYTHON_DIR>/profile_default/ipython_config.py and add the
     following line at the end to add itango configuration::
-    
+
         load_subconfig('ipython_config.py', profile='tango')
-    
+
     Alternatively, you could also load itango as an IPython extension::
-        
+
         config = get_config()
         i_shell_app = config.InteractiveShellApp
         extensions = getattr(i_shell_app, 'extensions', [])
-        extensions.append('PyTango.ipython')
+        extensions.append('itango')
         i_shell_app.extensions = extensions
-    
+
     for more information on how to configure IPython >= 0.11 please check the
     `IPython configuration <http://ipython.org/ipython-doc/dev/config/ipython.html#configuring-the-ipython-command-line-application>`_
-    
+
 And now, every time you start ipython::
 
     ipython
@@ -528,7 +532,7 @@ Adding itango to an existing customized profile
     IPython <= 0.10.
 
 If you have been working with IPython_ before and have already defined a
-customized personal profile, you can extend your profile with itango features 
+customized personal profile, you can extend your profile with itango features
 without breaking your existing options. The trick is to initialize itango extension
 with a parameter that tells itango to maintain the existing options (like colors,
 command line and initial banner).
@@ -544,12 +548,12 @@ contents:
 
     def main():
         ip = IPython.ipapi.get()
-        
+
         o = ip.options
         o.banner = "Springfield nuclear powerplant CLI\n\nWelcome Homer Simpson"
         o.colors = "Linux"
         o.prompt_in1 = "Mr. Burns owns you [\\#]: "
-        
+
     main()
 
 In order to have itango features available to this profile you simply need to
@@ -559,17 +563,17 @@ add two lines of code (lines 3 and 7):
 
     import os
     import IPython.ipapi
-    import PyTango.ipython
+    import itango
 
     def main():
         ip = IPython.ipapi.get()
-        PyTango.ipython.init_ipython(ip, console=False)
-        
+        itango.init_ipython(ip, console=False)
+
         o = ip.options
         o.banner = "Springfield nuclear powerplant CLI\n\nMr. Burns owns you!"
         o.colors = "Linux"
         o.prompt_in1 = "The Simpsons [\\#]: "
-        
+
     main()
 
 This will load the itango features into your profile while preserving your
@@ -581,10 +585,10 @@ Creating a profile that extends itango profile
 .. note::
     This chapter has a pending update. The contents only apply to
     IPython <= 0.10.
-    
+
 It is also possible to create a profile that includes all itango features and at
 the same time adds new ones. Let's suppose that you want to create a customized
-profile called 'orbit' that automaticaly exports devices of class 
+profile called 'orbit' that automaticaly exports devices of class
 'Libera' for the booster accelerator (assuming you are working on a synchrotron
 like institute ;-).
 Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:
@@ -595,12 +599,12 @@ Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:
     import IPython.ipapi
     import IPython.genutils
     import IPython.ColorANSI
-    import PyTango.ipython
+    import itango
     import StringIO
 
     def magic_liberas(ip, p=''):
         """Lists all known Libera devices."""
-        data = PyTango.ipython.get_device_map()
+        data = itango.get_device_map()
         s = StringIO.StringIO()
         cols = 30, 15, 20
         l = "%{0}s %{1}s %{2}s".format(*cols)
@@ -615,10 +619,10 @@ Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:
     def main():
         ip = IPython.ipapi.get()
 
-        PyTango.ipython.init_ipython(ip)
+        itango.init_ipython(ip)
 
         o = ip.options
-        
+
         Colors = IPython.ColorANSI.TermColors
         c = dict(Colors.__dict__)
 
@@ -626,15 +630,15 @@ Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:
 
         o.prompt_in1 = "Orbit [\\#]: "
         o.colors = "BlueTango"
-        
+
         ip.expose_magic("liberas", magic_liberas)
 
         db = ip.user_ns.get('db')
-        dev_class_dict = PyTango.ipython.get_class_map()
+        dev_class_dict = itango.get_class_map()
 
         if not dev_class_dict.has_key("Libera"):
             return
-        
+
         for libera in dev_class_dict['Libera']:
             domain, family, member = libera.split("/")
             var_name = domain + "_" + member
@@ -643,7 +647,9 @@ Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:
 
     main()
 
-Then start your CLI with::
+Then start your CLI with:
+
+.. sourcecode:: bash
 
     $ ipython --profile=orbit
 
@@ -654,10 +660,6 @@ and you will have something like this
 Advanced event monitoring
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. note::
-    This chapter has a pending update. The contents only apply to
-    IPython <= 0.10.
-
 With itango it is possible to monitor change events triggered by any tango
 attribute which has events enabled.
 
@@ -667,7 +669,7 @@ To start monitoring the change events of an attribute:
 
     ITango [1]: mon -a BL99_M1/Position
     'BL99_M1/Position' is now being monitored. Type 'mon' to see all events
-    
+
 To list all events that have been intercepted:
 
 .. sourcecode:: itango
@@ -710,5 +712,3 @@ To stop monitoring the attribute:
 
 .. note::
     Type 'mon?' to see detailed information about this magic command
-
-
