@@ -13,7 +13,7 @@ def description_from(filename):
             "pypandoc module not found, cannot convert description to RST")
         return open(filename, 'r').read()
     else:
-        return pypandoc.convert(filename, 'rst')
+        return pypandoc.convert(filename, 'rst', format='md')
 
 
 def get_entry_points():
@@ -28,7 +28,7 @@ CLASSIFIERS = """\
 Framework :: IPython
 Intended Audience :: Developers
 Intended Audience :: Science/Research
-License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL),
+License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)
 Programming Language :: Python
 Programming Language :: Python :: 2
 Programming Language :: Python :: 3
@@ -56,7 +56,7 @@ setup(
     author='Tiago Coutinho',
     author_email="coutinho@esrf.fr",
     description='An interactive Tango client',
-    long_description=description_from('README.md'),
+    long_description=description_from('README'),
     url='https://github.com/tango-cs/itango',
     download_url='http://pypi.python.org/pypi/itango',
     platforms=['Linux', 'Windows XP/Vista/7/8'],
