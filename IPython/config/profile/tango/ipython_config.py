@@ -15,8 +15,5 @@ config = get_config()
 # and merge it into the current one.
 load_subconfig('ipython_config.py', profile='default')
 
-import PyTango.ipython
-PyTango.ipython.load_config(config)
-
-
-
+import itango
+itango.load_config(config)

@@ -18,8 +18,8 @@ def main():
     ip = IPython.ipapi.get()
     try:
         ip.ex("import IPython.ipapi")
-        ip.ex("import PyTango.ipython")
-        ip.ex("PyTango.ipython.init_ipython(IPython.ipapi.get())")
+        ip.ex("import itango")
+        ip.ex("itango.init_ipython(IPython.ipapi.get())")
     except ImportError:
         print "Unable to start spock profile, is PyTango installed?"
 
