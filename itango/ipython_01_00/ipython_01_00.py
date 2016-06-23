@@ -369,8 +369,8 @@ def __get_event_log():
 #            _EVT_LOG = ipy_qt.EventLogger(model=model)
 #            _EVT_LOG.setWindowTitle("ITango - Event Logger Table")
 #        else:
-        import PyTango.ipython.eventlogger
-        _EVT_LOG = PyTango.ipython.eventlogger.EventLogger(capacity=10000, pager=page)
+        import itango.eventlogger
+        _EVT_LOG = itango.eventlogger.EventLogger(capacity=10000, pager=page)
     return _EVT_LOG
 
 def mon(self, parameter_s=''):
@@ -1191,13 +1191,13 @@ def init_ipython(ip=None, store=True, pytango=True, colors=True, console=True,
     _tango_init = True
 
 def load_config(config):
-    import PyTango.ipython
+    import itango
     import IPython.utils.coloransi
 
-    d = { "version" : str(PyTango.ipython.get_pytango_version()),
-          "pyver" : str(PyTango.ipython.get_python_version()),
-          "ipyver" : str(PyTango.ipython.get_ipython_version()),
-          "pytangover" : str(PyTango.ipython.get_pytango_version()), }
+    d = { "version" : str(itango.get_pytango_version()),
+          "pyver" : str(itango.get_python_version()),
+          "ipyver" : str(itango.get_ipython_version()),
+          "pytangover" : str(itango.get_pytango_version()), }
     d.update(IPython.utils.coloransi.TermColors.__dict__)
 
     so = Struct(
@@ -1205,7 +1205,7 @@ def load_config(config):
 
     so = config.get("tango_options", so)
 
-    ipy_ver = PyTango.ipython.get_ipython_version()
+    ipy_ver = itango.get_ipython_version()
 
     # ------------------------------------
     # Application
@@ -1231,7 +1231,7 @@ def load_config(config):
     # ------------------------------------
     i_shell_app = config.InteractiveShellApp
     extensions = getattr(i_shell_app, 'extensions', [])
-    extensions.append('PyTango.ipython')
+    extensions.append('itango')
     i_shell_app.extensions = extensions
 
     # ------------------------------------

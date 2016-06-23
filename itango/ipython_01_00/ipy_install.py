@@ -38,10 +38,10 @@ __PROFILE = """\
 friendly interface to Tango.
 Created with PyTango {pytangover} for IPython {ipyver}\"\"\"
 
-import PyTango.ipython
+import itango
 
 config = get_config()
-PyTango.ipython.load_config(config)
+itango.load_config(config)
 
 # Put any additional environment here
 """

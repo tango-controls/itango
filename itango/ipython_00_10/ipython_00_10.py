@@ -324,8 +324,8 @@ _EVT_LOG = None
 def __get_event_log():
     global _EVT_LOG
     if _EVT_LOG is None:
-        import PyTango.ipython.eventlogger
-        _EVT_LOG = PyTango.ipython.eventlogger.EventLogger(capacity=10000, pager=IPython.genutils.page)
+        import itango.eventlogger
+        _EVT_LOG = itango.eventlogger.EventLogger(capacity=10000, pager=IPython.genutils.page)
     return _EVT_LOG
 
 def magic_mon(self, parameter_s=''):
@@ -859,14 +859,14 @@ def init_store(ip):
         __store(ip, _TANGO_STORE)
         
 def init_console(ip):
-    import PyTango.ipython
+    import itango
     
     TermColors = IPython.ColorANSI.TermColors
     
-    d = { "version" : str(PyTango.ipython.get_pytango_version()),
-          "pyver" : str(PyTango.ipython.get_python_version()),
-          "ipyver" : str(PyTango.ipython.get_ipython_version()),
-          "pytangover" : str(PyTango.ipython.get_pytango_version()) }
+    d = { "version" : str(itango.get_pytango_version()),
+          "pyver" : str(itango.get_python_version()),
+          "ipyver" : str(itango.get_ipython_version()),
+          "pytangover" : str(itango.get_pytango_version()) }
     d.update(TermColors.__dict__)
 
     o = ip.options

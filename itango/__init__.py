@@ -57,14 +57,14 @@ elif ipv >= "0.11" and ipv < "1.0":
     load_ipython_extension = ipython_00_11.load_ipython_extension
     unload_ipython_extension = ipython_00_11.unload_ipython_extension
 elif ipv >= "1.00":
-    from . import ipython_10_00
+    from . import ipython_01_00
     init_ipython = None
-    install = ipython_10_00.install
-    is_installed = ipython_10_00.is_installed
-    __run = ipython_10_00.run
-    load_config = ipython_10_00.load_config
-    load_ipython_extension = ipython_10_00.load_ipython_extension
-    unload_ipython_extension = ipython_10_00.unload_ipython_extension
+    install = ipython_01_00.install
+    is_installed = ipython_01_00.is_installed
+    __run = ipython_01_00.run
+    load_config = ipython_01_00.load_config
+    load_ipython_extension = ipython_01_00.load_ipython_extension
+    unload_ipython_extension = ipython_01_00.unload_ipython_extension
     
 def run():
     if not is_installed():

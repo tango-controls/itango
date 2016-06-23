@@ -24,10 +24,10 @@ friendly interface to Tango.
 Created with PyTango {pytangover} for IPython {ipyver}\"\"\"
 
 import IPython
-import PyTango.ipython
+import itango
 
 ip = IPython.ipapi.get()
-PyTango.ipython.init_ipython(ip)
+itango.init_ipython(ip)
 
 """
 
