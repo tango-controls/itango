@@ -27,7 +27,7 @@ or the equivalent:
 
 and you should get something like this:
 
-.. image:: _static/itango00.png
+.. image:: _images/itango00.png
     :align: center
     :width: 80%
 
@@ -271,7 +271,7 @@ typing a variable containing a tango device object followend by :kbd:`Enter`
 will present you with a customized representation of the object instead of the
 usual :func:`repr` :
 
-    .. image:: _static/itango06.png
+    .. image:: _images/itango06.png
 
 You can customize the icon that itango displays for a specific device.
 The first thing to do is to copy the image file into
@@ -657,7 +657,7 @@ Then start your CLI with:
 
 and you will have something like this
 
-.. image:: _static/itango02.png
+.. image:: _images/itango02.png
 
 Advanced event monitoring
 ~~~~~~~~~~~~~~~~~~~~~~~~~
