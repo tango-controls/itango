@@ -41,9 +41,6 @@ setup(
     version='0.1.1',
 
     packages=find_packages(),
-    py_modules=[
-        'IPython.config.profile.tango.ipython_config',
-        'IPython.Extensions.ipy_profile_tango'],
     package_data={'itango': [
         'resource/*.png', 'resource/*.svg']},
     entry_points=get_entry_points(),
