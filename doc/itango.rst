@@ -15,13 +15,13 @@ project since PyTango 9.2.0.
 
 You can start ITango_ by typing on the command line:
 
-.. sourcecode:: bash
+.. sourcecode:: console
 
     $ itango
 
 or the equivalent:
 
-.. sourcecode:: bash
+.. sourcecode:: console
 
     $ ipython --profile=tango
 
@@ -263,7 +263,7 @@ Customized device representation
 
 When you use ipython >= 0.11 with a Qt console frontend:
 
-.. sourcecode:: bash
+.. sourcecode:: console
 
     $ itango qtconsole
 
@@ -651,7 +651,7 @@ Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:
 
 Then start your CLI with:
 
-.. sourcecode:: bash
+.. sourcecode:: console
 
     $ ipython --profile=orbit
 
