@@ -34,19 +34,27 @@ import PyTango
 
 __PROFILE = """\
 #!/usr/bin/env ipython
-\"\"\"An automaticaly generated IPython profile designed to provide a user
-friendly interface to Tango.
-Created with PyTango {pytangover} for IPython {ipyver}\"\"\"
+\"\"\"An automaticaly generated IPython profile designed
+to provide a user friendly interface to Tango.
 
-import itango
+Created with PyTango {pytangover} for IPython {ipyver}
+\"\"\"
 
-config = get_config()
-itango.load_config(config)
+# Protected block
+{protected_block}
 
 # Put any additional environment here
+
+"""
+
+__PROTECTED_BLOCK = """\
+import itango
+config = get_config()
+itango.load_config(config)
 """
 
 _CONFIG_FILE_NAME = 'ipython_config.py'
+
 
 def is_installed(ipydir=None, profile='tango'):
     ipython_dir = ipydir or get_ipython_dir()
@@ -55,7 +63,10 @@ def is_installed(ipydir=None, profile='tango'):
     except ProfileDirError:
         return False
     abs_config_file_name = os.path.join(p_dir.location, _CONFIG_FILE_NAME)
-    return os.path.isfile(abs_config_file_name)
+    if not os.path.isfile(abs_config_file_name):
+        return False
+    with open(abs_config_file_name) as f:
+        return __PROTECTED_BLOCK in f.read()
 
 
 def install(ipydir=None, verbose=True, profile='tango'):
@@ -64,7 +75,7 @@ def install(ipydir=None, verbose=True, profile='tango'):
             sys.stdout.write(msg)
             sys.stdout.flush()
     else:
-        out = lambda x : None
+        out = lambda x: None
 
     ipython_dir = ipydir or get_ipython_dir()
     try:
@@ -74,8 +85,10 @@ def install(ipydir=None, verbose=True, profile='tango'):
     abs_config_file_name = os.path.join(p_dir.location, _CONFIG_FILE_NAME)
     create_config = True
     if os.path.isfile(abs_config_file_name):
-        create_config = ask_yes_no("Tango configuration file already exists. "\
-                                   "Do you wish to replace it?", default='y')
+        msg = "Tango configuration file {0} already exists.\n"
+        msg += "Do you wish to replace it (y/n)?"
+        msg = msg.format(abs_config_file_name)
+        create_config = ask_yes_no(msg, default='y')
 
     if not create_config:
         return
@@ -83,7 +96,8 @@ def install(ipydir=None, verbose=True, profile='tango'):
     out("Installing tango extension to ipython... ")
 
     profile = __PROFILE.format(pytangover=PyTango.Release.version,
-                               ipyver=IPython.release.version)
+                               ipyver=IPython.release.version,
+                               protected_block=__PROTECTED_BLOCK)
     with open(abs_config_file_name, "w") as f:
         f.write(profile)
         f.close()
@@ -98,6 +112,7 @@ http://www.tango-controls.org/static/PyTango/latest/doc/html/
 Have fun with ITango!
 The PyTango team
 """)
+
 
 def main():
     d = None
