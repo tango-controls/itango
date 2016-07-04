@@ -18,7 +18,6 @@ import sys
 
 import IPython
 from IPython.core.profiledir import ProfileDirError, ProfileDir
-from IPython.core.application import BaseIPythonApplication
 from IPython.utils.io import ask_yes_no
 
 try:
@@ -119,6 +118,7 @@ def main():
     if len(sys.argv) > 1:
         d = sys.argv[1]
     install(d)
+
 
 if __name__ == "__main__":
     main()

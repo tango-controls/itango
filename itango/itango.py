@@ -37,6 +37,7 @@ except:  # IPython < 4.x
 import PyTango
 import PyTango.utils
 
+from . import common
 from .eventlogger import EventLogger
 from .install import install, is_installed
 
@@ -1236,10 +1237,10 @@ def load_config(config):
     import IPython.utils.coloransi
 
     d = {
-        "version": str(itango.get_pytango_version()),
-        "pyver": str(itango.get_python_version()),
-        "ipyver": str(itango.get_ipython_version()),
-        "pytangover": str(itango.get_pytango_version())
+        "version": str(common.get_pytango_version()),
+        "pyver": str(common.get_python_version()),
+        "ipyver": str(common.get_ipython_version()),
+        "pytangover": str(common.get_pytango_version())
     }
     d.update(IPython.utils.coloransi.TermColors.__dict__)
 
