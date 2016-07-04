@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # -----------------------------------------------------------------------------
-# This file is part of PyTango (http://www.tinyurl.com/PyTango)
+# This file is part of ITango (http://pypi.python.org/pypi/itango)
 #
 # Copyright 2006-2012 CELLS / ALBA Synchrotron, Bellaterra, Spain
 # Copyright 2013-2014 European Synchrotron Radiation Facility, Grenoble, France
