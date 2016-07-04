@@ -22,7 +22,7 @@ ITango is compatible with python 2 and 3. It requires:
 -  IPython_ >= 1.0
 -  PyTango_ >= 9.2
 
-.. note:: For IPython_ < 1.0 compatibilty, use ITango_ 0.1.1.
+.. note:: For IPython_ < 1.0 compatibilty, use `ITango 0.1.1`_.
 
 
 Install
@@ -72,5 +72,6 @@ Check out the `documentation <Documentation_>`__ for more informations.
 
 .. _IPython: http://ipython.org/
 .. _ITango: http://pypi.python.org/pypi/itango/
+.. _ITango 0.1.1: https://pypi.python.org/pypi/itango/0.1.1
 .. _PyTango: https://github.com/tango-cs/PyTango
 .. _Documentation: http://pythonhosted.org/itango
