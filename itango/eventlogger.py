@@ -13,7 +13,13 @@ from __future__ import print_function
 
 import re
 import io
-import operator
+
+LENGTHS = 4, 30, 18, 20, 12, 16
+COLUMNS = 'ID', 'Device', 'Attribute', 'Value', 'Quality', 'Time'
+
+TEMPLATE = ' '.join('{%d:%d}' % x for x in enumerate(LENGTHS))
+TITLE = TEMPLATE.format(*COLUMNS) + '\n' + ' '.join('-' * l for l in LENGTHS)
+
 
 class EventLogger(object):
 
@@ -59,15 +65,14 @@ class EventLogger(object):
                 io.StringIO.write(self, value)
 
         s = StringIO()
-        lengths = 4, 30, 18, 20, 12, 16
-        title = 'ID', 'Device', 'Attribute', 'Value', 'Quality', 'Time'
-        templ = "{0:{l[0]}} {1:{l[1]}} {2:{l[2]}} {3:{l[3]}} {4:{l[4]}} {5:{l[5]}}"
-        print(templ.format(*title, l=lengths), file=s)
-        print(*map(operator.mul, lengths, len(lengths)*"-"), file=s)
 
-        for i,r in enumerate(self._records):
-            if dexpr is not None and not dexpr.match(r.dev_name): continue
-            if aexpr is not None and not aexpr.match(r.s_attr_name): continue
+        print(TITLE, file=s)
+
+        for i, r in enumerate(self._records):
+            if dexpr is not None and not dexpr.match(r.dev_name):
+                continue
+            if aexpr is not None and not aexpr.match(r.s_attr_name):
+                continue
             if r.err:
                 v = r.errors[0].reason
                 q = 'ERROR'
@@ -76,8 +81,8 @@ class EventLogger(object):
                 v = str(r.attr_value.value)
                 q = str(r.attr_value.quality)
                 ts = r.attr_value.time.strftime("%H:%M:%S.%f")
-            msg = templ.format(i, r.dev_name, r.s_attr_name, v, q, ts, l=lengths)
-            print(msg, file=s)
+            args = i, r.dev_name, r.s_attr_name, v, q, ts
+            print(TEMPLATE.format(*args), file=s)
         s.seek(0)
         if self._pager is None:
             print(s.read())
