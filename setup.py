@@ -1,19 +1,7 @@
 """Setup file for itango."""
 
 import platform
-import warnings
 from setuptools import setup, find_packages
-
-
-def description_from(filename):
-    try:
-        import pypandoc
-    except ImportError:
-        warnings.warn(
-            "pypandoc module not found, cannot convert description to RST")
-        return open(filename, 'r').read()
-    else:
-        return pypandoc.convert(filename, 'rst', format='md')
 
 
 def get_entry_points():
@@ -53,7 +41,7 @@ setup(
     author='Tiago Coutinho',
     author_email="coutinho@esrf.fr",
     description='An interactive Tango client',
-    long_description=description_from('README'),
+    long_description=open('README.rst').read(),
     url='https://github.com/tango-cs/itango',
     download_url='http://pypi.python.org/pypi/itango',
     platforms=['Linux', 'Windows XP/Vista/7/8'],
