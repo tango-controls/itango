@@ -28,7 +28,7 @@ ITango is compatible with python 2 and 3. It requires:
 Install
 -------
 
-ITango is available on `PyPI <ITango_>`__::
+ITango is available on PyPI_::
 
     $ pip install itango
 
@@ -58,7 +58,7 @@ features from IPython:
 -  persistently store your favorite variables
 -  color modes
 
-For a complete list checkout the `IPython web page <IPython_>`__.
+For a complete list checkout the `IPython web page`_.
 
 It also adds set of PyTango_ specific features:
 
@@ -68,10 +68,13 @@ It also adds set of PyTango_ specific features:
 -  customized tango error message
 -  database utilities
 
-Check out the `documentation <Documentation_>`__ for more informations.
+Check out the documentation_ for more informations.
 
 .. _IPython: http://ipython.org/
 .. _ITango: http://pypi.python.org/pypi/itango/
 .. _ITango 0.1.1: https://pypi.python.org/pypi/itango/0.1.1
 .. _PyTango: https://github.com/tango-cs/PyTango
-.. _Documentation: http://pythonhosted.org/itango
+.. _documentation: http://pythonhosted.org/itango
+
+.. _PyPI: ITango_
+.. _IPython web page: IPython_
