@@ -1,16 +1,4 @@
-# ------------------------------------------------------------------------------
-# This file is part of PyTango (http://www.tinyurl.com/PyTango)
-#
-# Copyright 2006-2012 CELLS / ALBA Synchrotron, Bellaterra, Spain
-# Copyright 2013-2014 European Synchrotron Radiation Facility, Grenoble, France
-#
-# Distributed under the terms of the GNU Lesser General Public License,
-# either version 3 of the License, or (at your option) any later version.
-# See LICENSE.txt for more info.
-# ------------------------------------------------------------------------------
-
-"""reST directive for syntax-highlighting itango interactive sessions.
-"""
+"""reST directive for syntax-highlighting itango interactive sessions."""
 
 #-----------------------------------------------------------------------------
 # Needed modules
@@ -21,7 +9,7 @@ import copy
 
 # Third party
 from pygments.lexer import Lexer, do_insertions
-from pygments.lexers.agile import (PythonConsoleLexer, PythonLexer, 
+from pygments.lexers.agile import (PythonConsoleLexer, PythonLexer,
                                    PythonTracebackLexer)
 from pygments.token import Comment, Generic
 from pygments.style import Style
@@ -35,7 +23,7 @@ line_re = re.compile('.*?\n')
 DftStyle = pygments.styles.get_style_by_name("default")
 
 class TangoStyle(DftStyle):
-    
+
     styles = copy.copy(DftStyle.styles)
     styles[Generic.Prompt] = 'bold #00AA00'
 
@@ -61,7 +49,7 @@ class TangoConsoleLexer(Lexer):
 
       - It assumes the default itango prompts, not customized ones.
     """
-    
+
     name = 'ITango console session'
     aliases = ['itango']
     mimetypes = ['text/x-itango-console']

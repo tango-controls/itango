@@ -50,10 +50,10 @@ For a complete list checkout the `IPython web page <http://ipython.org/>`_.
 
 Plus an additional set of Tango_ specific features:
 
-    - automatic import of Tango objects to the console namespace (:mod:`PyTango`
-      module, :class:`~PyTango.DeviceProxy` (=Device),
-      :class:`~PyTango.Database`, :class:`~PyTango.Group`
-      and :class:`~PyTango.AttributeProxy` (=Attribute))
+    - automatic import of Tango objects to the console namespace (:mod:`tango`
+      module, :class:`~tango.DeviceProxy` (=Device),
+      :class:`~tango.Database`, :class:`~tango.Group`
+      and :class:`~tango.AttributeProxy` (=Attribute))
     - device name completion
     - attribute name completion
     - automatic tango object member completion
@@ -71,7 +71,7 @@ Check the :ref:`itango-highlights` to see how to put these feature to good use
 :-)
 
 
-.. currentmodule:: PyTango
+.. currentmodule:: tango
 
 .. _itango-highlights:
 
@@ -84,12 +84,12 @@ Tab completion
 ITango_ exports many tango specific objects to the console namespace.
 These include:
 
-    - the PyTango module itself
+    - the tango module itself
 
       .. sourcecode:: itango
 
-            ITango [1]: PyTango
-            Result [1]: <module 'PyTango' from ...>
+            ITango [1]: tango
+            Result [1]: <module 'tango' from ...>
 
     - The :class:`DeviceProxy` (=Device), :class:`AttributeProxy` (=Attribute),
       :class:`Database` and :class:`Group` classes
@@ -100,7 +100,7 @@ These include:
             DeprecationWarning            Device       DeviceProxy
 
             ITango [2]: Device
-            Result [2]: <class 'PyTango._PyTango.DeviceProxy'>
+            Result [2]: <class 'tango._tango.DeviceProxy'>
 
             ITango [3]: Device("sys/tg_test/1")
             Result [3]: DeviceProxy(sys/tg_test/1)
@@ -166,7 +166,7 @@ where the attribute resides is running.
 
     ITango [29]: print test.read()
     DeviceAttribute[
-    data_format = PyTango._PyTango.AttrDataFormat.SCALAR
+    data_format = tango._tango.AttrDataFormat.SCALAR
       dim_x = 1
       dim_y = 0
     has_failed = False
@@ -174,10 +174,10 @@ where the attribute resides is running.
        name = 'short_scalar'
     nb_read = 1
     nb_written = 1
-    quality = PyTango._PyTango.AttrQuality.ATTR_VALID
+    quality = tango._tango.AttrQuality.ATTR_VALID
     r_dimension = AttributeDimension(dim_x = 1, dim_y = 0)
        time = TimeVal(tv_nsec = 0, tv_sec = 1279723723, tv_usec = 905598)
-       type = PyTango._PyTango.CmdArgType.DevShort
+       type = tango._tango.CmdArgType.DevShort
       value = 47
     w_dim_x = 1
     w_dim_y = 0
@@ -369,12 +369,12 @@ the magic command 'tango_error'.
         desc = 'Read value for attribute no_value has not been updated'
       origin = 'Device_3Impl::read_attributes_no_except'
       reason = 'API_AttrValueNotSet'
-    severity = PyTango._PyTango.ErrSeverity.ERR]
+    severity = tango._tango.ErrSeverity.ERR]
     DevError[
         desc = 'Failed to read_attribute on device sys/tg_test/1, attribute no_value'
       origin = 'DeviceProxy::read_attribute()'
       reason = 'API_AttributeFailed'
-    severity = PyTango._PyTango.ErrSeverity.ERR]]
+    severity = tango._tango.ErrSeverity.ERR]]
 
 Switching database
 ~~~~~~~~~~~~~~~~~~
@@ -645,7 +645,7 @@ Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:
             domain, family, member = libera.split("/")
             var_name = domain + "_" + member
             var_name = var_name.replace("-","_")
-            ip.to_user_ns( { var_name : PyTango.DeviceProxy(libera) } )
+            ip.to_user_ns( { var_name : tango.DeviceProxy(libera) } )
 
     main()
 

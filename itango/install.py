@@ -28,7 +28,7 @@ except ImportError:
     except ImportError:
         from IPython.genutils import get_ipython_dir
 
-import PyTango
+import tango
 
 
 __PROFILE = """\
@@ -94,7 +94,7 @@ def install(ipydir=None, verbose=True, profile='tango'):
 
     out("Installing tango extension to ipython... ")
 
-    profile = __PROFILE.format(pytangover=PyTango.Release.version,
+    profile = __PROFILE.format(pytangover=tango.Release.version,
                                ipyver=IPython.release.version,
                                protected_block=__PROTECTED_BLOCK)
     with open(abs_config_file_name, "w") as f:
@@ -106,7 +106,7 @@ To start ipython with tango interface simply type on the command line:
 %% ipython --profile=tango
 
 For more information goto:
-http://www.tango-controls.org/static/PyTango/latest/doc/html/
+http://pytango.readthedocs.io
 
 Have fun with ITango!
 The PyTango team

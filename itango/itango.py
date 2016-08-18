@@ -34,21 +34,21 @@ try:     # IPython 4.x
 except:  # IPython < 4.x
     from IPython.config.application import Application
 
-import PyTango
-import PyTango.utils
+import tango
+import tango.utils
 
 from . import common
 from .eventlogger import EventLogger
 from .install import install, is_installed
 
 
-_TG_EXCEPTIONS = PyTango.DevFailed, PyTango.ConnectionFailed, \
-    PyTango.CommunicationFailed, \
-    PyTango.NamedDevFailed, PyTango.NamedDevFailedList, \
-    PyTango.WrongNameSyntax, PyTango.NonDbDevice, PyTango.WrongData, \
-    PyTango.NonSupportedFeature, PyTango.AsynCall, \
-    PyTango.AsynReplyNotArrived, PyTango.EventSystemFailed, \
-    PyTango.DeviceUnlocked, PyTango.NotAllowed
+_TG_EXCEPTIONS = tango.DevFailed, tango.ConnectionFailed, \
+    tango.CommunicationFailed, \
+    tango.NamedDevFailed, tango.NamedDevFailedList, \
+    tango.WrongNameSyntax, tango.NonDbDevice, tango.WrongData, \
+    tango.NonSupportedFeature, tango.AsynCall, \
+    tango.AsynReplyNotArrived, tango.EventSystemFailed, \
+    tango.DeviceUnlocked, tango.NotAllowed
 
 _DB_SYMB = "db"
 _DFT_TANGO_HOST = None
@@ -110,15 +110,15 @@ class DeviceClassCompleter(object):
 # using may be different than the default TANGO_HOST. What we do is always append
 # the name of the database in usage to the device name given by the user (in case
 # he doesn't give a database name him(her)self, of course.
-#__DeviceProxy_init_orig__ = PyTango.DeviceProxy.__init__
-#def __DeviceProxy__init__(self, dev_name):
-#    db = __get_db()
-#    if db is None: return
-#    if dev_name.count(":") == 0:
-#        db_name = "%s:%s" % (db.get_db_host(), db.get_db_port())
-#        dev_name = "%s/%s" % (db_name, dev_name)
-#    __DeviceProxy_init_orig__(self, dev_name)
-#PyTango.DeviceProxy.__init__ = __DeviceProxy__init__
+# __DeviceProxy_init_orig__ = tango.DeviceProxy.__init__
+# def __DeviceProxy__init__(self, dev_name):
+#     db = __get_db()
+#     if db is None: return
+#     if dev_name.count(":") == 0:
+#         db_name = "%s:%s" % (db.get_db_host(), db.get_db_port())
+#         dev_name = "%s/%s" % (db_name, dev_name)
+#     __DeviceProxy_init_orig__(self, dev_name)
+# tango.DeviceProxy.__init__ = __DeviceProxy__init__
 
 
 # Completers
@@ -221,7 +221,8 @@ def __AttributeProxy_completer(ip, evt):
 
 def __get_device_proxy(dev_name):
     db = __get_db()
-    if db is None: return
+    if db is None:
+        return
     cache = db._db_cache
     from_alias = cache.aliases.get(dev_name)
 
@@ -233,7 +234,7 @@ def __get_device_proxy(dev_name):
         d = data[3]
         if d is None:
             try:
-                d = data[3] = PyTango.DeviceProxy(dev_name)
+                d = data[3] = tango.DeviceProxy(dev_name)
             except:
                 pass
         return d
@@ -241,7 +242,8 @@ def __get_device_proxy(dev_name):
 
 def __get_device_subscriptions(dev_name):
     db = __get_db()
-    if db is None: return
+    if db is None:
+        return
     cache = db._db_cache
     from_alias = cache.aliases.get(dev_name)
 
@@ -445,7 +447,7 @@ def mon(self, parameter_s=''):
         d = __get_device_proxy(dev)
         w = __get_event_log()
         model = w.model()
-        attr_id = d.subscribe_event(attr, PyTango.EventType.CHANGE_EVENT,
+        attr_id = d.subscribe_event(attr, tango.EventType.CHANGE_EVENT,
                                     model, [])
         subscriptions[attr.lower()] = attr_id
         print("'%s' is now being monitored. Type 'mon' to see all events" % toadd)
@@ -466,7 +468,7 @@ def mon(self, parameter_s=''):
             w = __get_event_log()
             e = w.getEvents()[evtid]
             if e.err:
-                print(str(PyTango.DevFailed(*e.errors)))
+                print(str(tango.DevFailed(*e.errors)))
             else:
                 print(str(e))
         except IndexError:
@@ -578,7 +580,7 @@ def __get_default_tango_host():
     global _DFT_TANGO_HOST
     if _DFT_TANGO_HOST is None:
         try:
-            db = PyTango.Database()
+            db = tango.Database()
             _DFT_TANGO_HOST = "%s:%s" % (db.get_db_host(), db.get_db_port())
         except:
             pass
@@ -621,7 +623,7 @@ def __get_db(host_port=None):
 
     if create_db:
         try:
-            db = PyTango.Database(*host_port.split(":"))
+            db = tango.Database(*host_port.split(":"))
 
             user_ns["DB_NAME"] = host_port
         except Exception as e:
@@ -734,8 +736,8 @@ def init_pytango(ip):
     """Initializes the IPython environment with PyTango elements"""
 
     # export symbols to IPython namepspace
-    ip.ex("import PyTango")
-    ip.ex("from PyTango import DeviceProxy, AttributeProxy, Database, Group")
+    ip.ex("import tango")
+    ip.ex("from tango import DeviceProxy, AttributeProxy, Database, Group")
     ip.ex("Device = DeviceProxy")
     ip.ex("Attribute = AttributeProxy")
 
@@ -779,7 +781,7 @@ def init_db(parameter_s=''):
     assert row_nb == len(data) / column_nb
     devices, aliases, servers, klasses = data[0::4], data[1::4], data[2::4], data[3::4]
 
-    #CD = PyTango.utils.CaselessDict
+    # CD = tango.utils.CaselessDict
     CD = dict
     dev_dict, serv_dict, klass_dict, alias_dict = CD(), CD(), CD(), CD()
 
@@ -818,7 +820,7 @@ def init_db(parameter_s=''):
         if not exists or klass in old_junk:
             c = DeviceClassCompleter(klass, devices)
             ip.set_hook('complete_command', c, re_key = ".*" + klass + "[^\w\.]+")
-            exposed_klasses[klass] = PyTango.DeviceProxy
+            exposed_klasses[klass] = tango.DeviceProxy
 
     # expose classes no user namespace
     user_ns.update(exposed_klasses)
@@ -837,9 +839,9 @@ def init_db(parameter_s=''):
         if len(alias):
             attr_alias_dict[alias] = attribute
 
-    device_list = PyTango.utils.CaselessList(dev_dict.keys())
-    alias_list = PyTango.utils.CaselessList(alias_dict.keys())
-    attr_alias_list = PyTango.utils.CaselessList(attr_alias_dict.keys())
+    device_list = tango.utils.CaselessList(dev_dict.keys())
+    alias_list = tango.utils.CaselessList(alias_dict.keys())
+    attr_alias_list = tango.utils.CaselessList(attr_alias_dict.keys())
 
     # Build cache
     db_cache = Struct(devices=dev_dict, aliases=alias_dict,
@@ -972,7 +974,7 @@ def __get_class_property_str(dev_class, prop_name, default=""):
 
 
 def display_deviceclass_html(dev_class):
-    """displayhook function for PyTango.DeviceProxy, rendered as HTML"""
+    """displayhook function for tango.DeviceProxy, rendered as HTML"""
     fmt = dict(name=dev_class)
     db = __get_db()
     try:
@@ -1033,7 +1035,7 @@ __DEV_HTML_TEMPLATE = """\
 
 
 def display_deviceproxy_html(dev_proxy):
-    """displayhook function for PyTango.DeviceProxy, rendered as HTML"""
+    """displayhook function for tango.DeviceProxy, rendered as HTML"""
     try:
         info = dev_proxy.info()
     except:
@@ -1075,7 +1077,7 @@ __DB_HTML_TEMPLATE = """\
 
 
 def display_database_html(db):
-    """displayhook function for PyTango.Database, rendered as HTML"""
+    """displayhook function for tango.Database, rendered as HTML"""
     fmt = dict()
 
     try:
@@ -1118,17 +1120,17 @@ __DEV_ATTR_ERR_HTML_TEMPLATE = """\
 </table>"""
 
 QUALITY_TO_HEXCOLOR_STR = {
-    PyTango.AttrQuality.ATTR_VALID: ("#00FF00", "#000000"),
-    PyTango.AttrQuality.ATTR_INVALID: ("#808080", "#FFFFFF"),
-    PyTango.AttrQuality.ATTR_ALARM: ("#FF8C00", "#FFFFFF"),
-    PyTango.AttrQuality.ATTR_WARNING: ("#FF8C00", "#FFFFFF"),
-    PyTango.AttrQuality.ATTR_CHANGING: ("#80A0FF", "#000000"),
+    tango.AttrQuality.ATTR_VALID: ("#00FF00", "#000000"),
+    tango.AttrQuality.ATTR_INVALID: ("#808080", "#FFFFFF"),
+    tango.AttrQuality.ATTR_ALARM: ("#FF8C00", "#FFFFFF"),
+    tango.AttrQuality.ATTR_WARNING: ("#FF8C00", "#FFFFFF"),
+    tango.AttrQuality.ATTR_CHANGING: ("#80A0FF", "#000000"),
     None: ("#808080", "#000000"),
 }
 
 
 def display_deviceattribute_html(da):
-    """displayhook function for PyTango.DeviceAttribute, rendered as HTML"""
+    """displayhook function for tango.DeviceAttribute, rendered as HTML"""
     fmt = dict(name=da.name, type=da.type, data_format=da.data_format)
     template = None
     if da.has_failed:
@@ -1142,13 +1144,13 @@ def display_deviceattribute_html(da):
         else:
             template = __DEV_ATTR_RW_HTML_TEMPLATE
             fmt['w_value'] = str(da.w_value)
-            if da.data_format == PyTango.AttrDataFormat.SCALAR:
+            if da.data_format == tango.AttrDataFormat.SCALAR:
                 fmt['w_dim'] = ""
             else:
                 fmt['w_dim'] = "<br/>(%d, %d)" % (wd.dim_x, wd.dim_y)
         fmt['bgcolor'], fmt['fgcolor'] = QUALITY_TO_HEXCOLOR_STR[da.quality]
         fmt['quality'] = str(da.quality)
-        if da.data_format == PyTango.AttrDataFormat.SCALAR:
+        if da.data_format == tango.AttrDataFormat.SCALAR:
             fmt['r_dim'] = ""
         else:
             fmt['r_dim'] = "<br/>(%d, %d)" % (rd.dim_x, rd.dim_y)
@@ -1192,7 +1194,7 @@ def display_groupreply_html(gr):
     else:
         template = __GROUP_REPLY_HTML_TEMPLATE
         data = gr.get_data()
-        if isinstance(data, PyTango.DeviceAttribute):
+        if isinstance(data, tango.DeviceAttribute):
             data = display_deviceattribute_html(data)
         fmt["data"] = data
 
@@ -1202,12 +1204,12 @@ def display_groupreply_html(gr):
 
 def init_display(ip):
     html_formatter = ip.display_formatter.formatters["text/html"]
-    html_formatter.for_type(PyTango.DeviceProxy, display_deviceproxy_html)
-    html_formatter.for_type(PyTango.Database, display_database_html)
-    html_formatter.for_type(PyTango.DeviceAttribute, display_deviceattribute_html)
-    html_formatter.for_type(PyTango.Group, display_group_html)
-    html_formatter.for_type(PyTango.GroupAttrReply, display_groupreply_html)
-    html_formatter.for_type(PyTango.GroupCmdReply, display_groupreply_html)
+    html_formatter.for_type(tango.DeviceProxy, display_deviceproxy_html)
+    html_formatter.for_type(tango.Database, display_database_html)
+    html_formatter.for_type(tango.DeviceAttribute, display_deviceattribute_html)
+    html_formatter.for_type(tango.Group, display_group_html)
+    html_formatter.for_type(tango.GroupAttrReply, display_groupreply_html)
+    html_formatter.for_type(tango.GroupCmdReply, display_groupreply_html)
 
 
 def init_ipython(ip=None, store=True, pytango=True, colors=True, console=True,
@@ -1333,7 +1335,7 @@ def load_ipython_extension(ipython):
 
 def unload_ipython_extension(ipython):
     # If you want your extension to be unloadable, put that logic here.
-    #print "Unloading PyTango IPython extension"
+    #print "Unloading tango IPython extension"
     pass
 
 

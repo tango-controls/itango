@@ -1,14 +1,3 @@
-# ------------------------------------------------------------------------------
-# This file is part of PyTango (http://www.tinyurl.com/PyTango)
-#
-# Copyright 2006-2012 CELLS / ALBA Synchrotron, Bellaterra, Spain
-# Copyright 2013-2014 European Synchrotron Radiation Facility, Grenoble, France
-#
-# Distributed under the terms of the GNU Lesser General Public License,
-# either version 3 of the License, or (at your option) any later version.
-# See LICENSE.txt for more info.
-# ------------------------------------------------------------------------------
-
 """reST directive for syntax-highlighting ipython interactive sessions.
 
 XXX - See what improvements can be made based on the new (as of Sept 2009)
@@ -24,7 +13,7 @@ import re
 
 # Third party
 from pygments.lexer import Lexer, do_insertions
-from pygments.lexers.agile import (PythonConsoleLexer, PythonLexer, 
+from pygments.lexers.agile import (PythonConsoleLexer, PythonLexer,
                                    PythonTracebackLexer)
 from pygments.token import Comment, Generic
 
@@ -59,7 +48,7 @@ class IPythonConsoleLexer(Lexer):
 
       - It assumes the default IPython prompts, not customized ones.
     """
-    
+
     name = 'IPython console session'
     aliases = ['ipython']
     mimetypes = ['text/x-ipython-console']

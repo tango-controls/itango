@@ -34,7 +34,7 @@ setup(
     entry_points=get_entry_points(),
     install_requires=[
         'IPython>=1.0',
-        'PyTango>=9.2'],
+        'pytango>=9.2.0'],
 
     license='LGPL',
     classifiers=CLASSIFIERS,

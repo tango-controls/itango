@@ -53,11 +53,11 @@ def get_ipython_version():
 
 def get_pytango_version():
     try:
-        import PyTango
+        import tango
     except:
         return
     try:
-        v = PyTango.Release.version
+        v = tango.Release.version
     except:
         v = '0.0.0'
     return StrictVersion(v)
