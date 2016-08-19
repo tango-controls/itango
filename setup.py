@@ -26,7 +26,7 @@ Topic :: System :: Shells
 
 setup(
     name='itango',
-    version='0.1.2',
+    version='0.1.3',
 
     packages=find_packages(),
     package_data={'itango': [
