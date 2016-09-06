@@ -15,9 +15,16 @@ __all__ = ["install",
            "get_python_version", "get_ipython_version",
            "get_pytango_version"]
 
-from .common import get_python_version, get_ipython_version
-from .common import get_pytango_version
-
-from .install import install
-from .itango import load_ipython_extension, unload_ipython_extension
-from .itango import load_config, run, run_qt
+try:
+    import tango
+except ImportError:
+    # PyTango <= 8.1.8
+    from PyTango.ipython import *
+    from PyTango.ipython import __path__
+else:
+    # PyTango >= 9.2
+    from .common import get_python_version, get_ipython_version
+    from .common import get_pytango_version
+    from .install import install
+    from .itango import load_ipython_extension, unload_ipython_extension
+    from .itango import load_config, run, run_qt

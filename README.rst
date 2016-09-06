@@ -19,10 +19,8 @@ Requirements
 
 ITango is compatible with python 2 and 3. It requires:
 
--  IPython_ >= 1.0
--  PyTango_ >= 9.2
-
-.. note:: For IPython_ < 1.0 compatibilty, use `ITango 0.1.1`_.
+-  PyTango_ >= 7.2
+-  IPython_ >= 1.0 (or >= 0.10 if used with PyTango <= 8.1.8)
 
 
 Install
