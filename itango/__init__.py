@@ -11,7 +11,7 @@
 
 __all__ = ["install",
            "load_ipython_extension", "unload_ipython_extension",
-           "load_config", "run", "run_qt",
+           "init_ipython", "load_config", "run", "run_qt",
            "get_python_version", "get_ipython_version",
            "get_pytango_version"]
 
@@ -27,4 +27,4 @@ else:
     from .common import get_pytango_version
     from .install import install
     from .itango import load_ipython_extension, unload_ipython_extension
-    from .itango import load_config, run, run_qt
+    from .itango import init_ipython, load_config, run, run_qt
