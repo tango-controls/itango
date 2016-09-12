@@ -39,7 +39,7 @@ import tango.utils
 
 from . import common
 from .eventlogger import EventLogger
-from .install import install, is_installed
+from .install import install, is_installed, install_kernel
 
 
 _TG_EXCEPTIONS = tango.DevFailed, tango.ConnectionFailed, \
@@ -914,7 +914,7 @@ def complete(text):
     return outcomps
 
 __DIRNAME = os.path.dirname(os.path.abspath(__file__))
-__RES_DIR = os.path.join(__DIRNAME, os.path.pardir, 'resource')
+__RES_DIR = os.path.join(__DIRNAME, 'resource')
 
 
 class __TangoDeviceInfo(object):
@@ -1235,7 +1235,6 @@ def init_ipython(ip=None, store=True, pytango=True, colors=True, console=True,
 
 
 def load_config(config):
-    import itango
     import IPython.utils.coloransi
 
     d = {
@@ -1266,9 +1265,11 @@ def load_config(config):
     # ------------------------------------
     # PromptManager (ipython >= 0.12)
     # ------------------------------------
-    prompt = config.PromptManager
-    prompt.in_template = 'ITango [\\#]: '
-    prompt.out_template = 'Result [\\#]: '
+
+    if common.get_ipython_version() < '5.0':
+        prompt = config.PromptManager
+        prompt.in_template = 'ITango [\\#]: '
+        prompt.out_template = 'Result [\\#]: '
 
     # ------------------------------------
     # InteractiveShellApp
@@ -1340,52 +1341,80 @@ def unload_ipython_extension(ipython):
 
 
 def patch_qt_console():
-    # overwrite the original IPython Qt widget with our own so we can put a
-    # customized banner.
+    """Overwrite the original IPython Qt widget with our own
+    so we can put a customized banner.
+
+    Return the customized application class.
+    """
+    # Traitlets imports
     try:  # IPython 4.x
         from traitlets import Unicode
     except ImportError:  # IPython < 4.x
         from IPython.utils.traitlets import Unicode
 
-    try:  # qtconsole
-        from qtconsole.rich_ipython_widget import RichIPythonWidget
-        from qtconsole.qtconsoleapp import IPythonQtConsoleApp
-    except ImportError:  # No qtconsole
-        from IPython.qt.console.rich_ipython_widget import RichIPythonWidget
-        from IPython.qt.console.qtconsoleapp import IPythonQtConsoleApp
+    # Qt concole imports
+    try:
+        from qtconsole import rich_ipython_widget
+        from qtconsole import qtconsoleapp
+    except ImportError:
+        from IPython.qt.console import rich_ipython_widget
+        from IPython.qt.console import qtconsoleapp
 
-    class ITangoConsole(RichIPythonWidget):
+    # Patch widget factory
+    try:
+        WidgetClass = rich_ipython_widget.RichJupyterWidget
+    except AttributeError:
+        WidgetClass = rich_ipython_widget.RichIPythonWidget
+
+    # Custom widget class
+    class ITangoConsole(WidgetClass):
 
         banner = Unicode(config=True)
 
         def _banner_default(self):
             config = get_config()
-            return config.ITangoConsole.banner
+            banner = config.ITangoConsole.banner
+            return banner if isinstance(banner, basestring) else ''
 
-    IPythonQtConsoleApp.widget_factory = ITangoConsole
+    # Patch widget factory
+    try:
+        AppClass = qtconsoleapp.JupyterQtConsoleApp
+    except AttributeError:
+        AppClass = qtconsoleapp.IPythonQtConsoleApp
+    AppClass.widget_factory = ITangoConsole
+
+    # Return patched application class
+    return AppClass
 
 
 def run(qt=False):
     argv = sys.argv
 
+    # Install tango profile
     if not is_installed():
         install(verbose=False)
 
-    try:
-        for i, arg in enumerate(argv[:1]):
-            if arg.startswith('--profile='):
-                break
-        else:
-            argv.append("--profile=tango")
-    except:
-        pass
+    # Install jupyter kernel spec
+    kernel_installed = install_kernel(verbose=False)
 
+    # Run with jupyter
+    if qt and kernel_installed:
+        argv.append("--kernel=tango")
+        app_class = patch_qt_console()
+        return app_class.launch_instance()
+
+    # Add tango profile
+    if not any(arg.startswith('--profile=') for arg in argv):
+        argv.append("--profile=tango")
+
+    # Configure qt
     if qt:
         patch_qt_console()
         if 'qtconsole' not in argv:
             argv.insert(1, 'qtconsole')
             argv.append('--pylab=inline')
 
+    # Run
     launch_new_instance()
 
 

@@ -30,7 +30,6 @@ except ImportError:
 
 import tango
 
-
 __PROFILE = """\
 #!/usr/bin/env ipython
 \"\"\"An automaticaly generated IPython profile designed
@@ -53,6 +52,31 @@ itango.load_config(config)
 """
 
 _CONFIG_FILE_NAME = 'ipython_config.py'
+
+
+def install_kernel(verbose=True):
+    if verbose:
+        print('Installing ITango kernelspec for jupyter...')
+    # See if ipykernel is available
+    try:
+        from ipykernel.kernelspec import install as kernelinstall
+    except ImportError:
+        if verbose:
+            print('The ipykernel module is not available; '
+                  'ITango kernelspec will not be installed')
+        return False
+    # Try to install the kernel spec
+    try:
+        path = kernelinstall(kernel_name='tango', profile='tango',
+                             display_name='ITango', user=True)
+    except Exception as exc:
+        if verbose:
+            print('Error while installing ITango kernelspec: {!r}'.format(exc))
+        return False
+    # Installation OK
+    if verbose:
+        print('Installed ITango kernelspec in {}'.format(path))
+    return True
 
 
 def is_installed(ipydir=None, profile='tango'):
@@ -118,6 +142,7 @@ def main():
     if len(sys.argv) > 1:
         d = sys.argv[1]
     install(d)
+    install_kernel()
 
 
 if __name__ == "__main__":
