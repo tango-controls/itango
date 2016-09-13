@@ -237,7 +237,7 @@ This way, if you want to create a device of class which you already know
 
 One great advantage is that the tango device name completion is sensitive to the
 type of device you want to create. This means that if you are in the middle of
-writting a device name and you press the <tab> key, only devices of the tango
+writing a device name and you press the <tab> key, only devices of the tango
 class 'Libera' will show up as possible completions.
 
 .. sourcecode:: itango
@@ -590,7 +590,7 @@ Creating a profile that extends itango profile
 
 It is also possible to create a profile that includes all itango features and at
 the same time adds new ones. Let's suppose that you want to create a customized
-profile called 'orbit' that automaticaly exports devices of class
+profile called 'orbit' that automatically exports devices of class
 'Libera' for the booster accelerator (assuming you are working on a synchrotron
 like institute ;-).
 Here is the code for the $HOME/.ipython/ipy_profile_orbit.py:

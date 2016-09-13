@@ -1374,7 +1374,7 @@ def patch_qt_console():
         def _banner_default(self):
             config = get_config()
             banner = config.ITangoConsole.banner
-            return banner if isinstance(banner, basestring) else ''
+            return banner if isinstance(banner, str) else ''
 
     # Patch widget factory
     try:
