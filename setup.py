@@ -21,8 +21,8 @@ setup(
 
     py_modules=['itango'],
     install_requires=[
-        'IPython>=0.10',
-        'PyTango>=7.2'],
+        'IPython>=0.10,<5',
+        'PyTango>=7.2,<9'],
 
     license='LGPL',
     classifiers=CLASSIFIERS,
