@@ -17,7 +17,7 @@ Topic :: System :: Shells
 
 setup(
     name='itango',
-    version='0.0.0',
+    version='0.0.1',
 
     py_modules=['itango'],
     install_requires=[
