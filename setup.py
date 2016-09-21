@@ -1,15 +1,6 @@
 """Setup file for itango."""
 
-import platform
-from setuptools import setup, find_packages
-
-
-def get_entry_points():
-    major = int(platform.python_version_tuple()[0])
-    name = 'itango3' if major == 3 else 'itango'
-    return {
-        "console_scripts": ["{0} = itango:run".format(name)],
-        "gui_scripts": ["{0}-qt = itango:run_qt".format(name)]}
+from setuptools import setup
 
 
 CLASSIFIERS = """\
@@ -26,12 +17,9 @@ Topic :: System :: Shells
 
 setup(
     name='itango',
-    version='0.1.5',
+    version='0.0.0',
 
-    packages=find_packages(),
-    package_data={'itango': [
-        'resource/*.png', 'resource/*.svg']},
-    entry_points=get_entry_points(),
+    py_modules=['itango'],
     install_requires=[
         'IPython>=0.10',
         'PyTango>=7.2'],
@@ -40,7 +28,7 @@ setup(
     classifiers=CLASSIFIERS,
     author='Tiago Coutinho',
     author_email="coutinho@esrf.fr",
-    description='An interactive Tango client',
+    description='Compatibility package for itango',
     long_description=open('README.rst').read(),
     url='https://github.com/tango-cs/itango',
     download_url='http://pypi.python.org/pypi/itango',
