@@ -21,12 +21,12 @@ from IPython.core.profiledir import ProfileDirError, ProfileDir
 from IPython.utils.io import ask_yes_no
 
 try:
-    from IPython.paths import get_ipython_dir
+    from IPython.paths import get_ipython_dir, ensure_dir_exists
 except ImportError:
     try:
-        from IPython.utils.path import get_ipython_dir
+        from IPython.utils.path import get_ipython_dir, ensure_dir_exists
     except ImportError:
-        from IPython.genutils import get_ipython_dir
+        from IPython.genutils import get_ipython_dir, ensure_dir_exists
 
 import tango
 
@@ -101,6 +101,7 @@ def install(ipydir=None, verbose=True, profile='tango'):
         out = lambda x: None
 
     ipython_dir = ipydir or get_ipython_dir()
+    ensure_dir_exists(ipython_dir)
     try:
         p_dir = ProfileDir.find_profile_dir_by_name(ipython_dir, profile)
     except ProfileDirError:
