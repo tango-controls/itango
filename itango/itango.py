@@ -23,6 +23,7 @@ import sys
 import operator
 import textwrap
 
+import IPython
 from IPython.core.error import UsageError
 from IPython.utils.ipstruct import Struct
 from IPython.core.page import page
@@ -57,7 +58,19 @@ _TANGO_ERR = "__tango_error"
 _PYTHON_ERR = "__python_error"
 _tango_init = False
 
+def _get_ipython_major_version():
+    ver = None
+    if hasattr(IPython, "Release"):
+        ver = IPython.Release.version.split(".")
+    elif hasattr(IPython, "release"):
+        ver = IPython.release.version.split(".")
+    return int(ver[0]) if ver else 0
 
+if _get_ipython_major_version() >= 5:
+    _DEFAULTCOLOR = 'Neutral'
+else:
+    _DEFAULTCOLOR = 'Linux'
+    
 # IPython utilities
 
 def get_pylab_mode():
@@ -702,12 +715,12 @@ def __build_color_scheme(ip, name):
     SyntaxColors = ip.IP.SyntaxTB.color_scheme_table
     InspectColors = IPython.OInspect.InspectColors
 
-    promptTangoColors = PromptColors['Linux'].copy(name)
-    ANSITangoColors = ANSICodeColors['Linux'].copy(name)
-    exceptionTangoColors = ExceptionColors['Linux'].copy(name)
-    TBTangoColors = TBColors['Linux'].copy(name)
-    syntaxTangoColors = SyntaxColors['Linux'].copy(name)
-    inspectTangoColors = InspectColors['Linux'].copy(name)
+    promptTangoColors = PromptColors[_DEFAULTCOLOR].copy(name)
+    ANSITangoColors = ANSICodeColors[_DEFAULTCOLOR].copy(name)
+    exceptionTangoColors = ExceptionColors[_DEFAULTCOLOR].copy(name)
+    TBTangoColors = TBColors[_DEFAULTCOLOR].copy(name)
+    syntaxTangoColors = SyntaxColors[_DEFAULTCOLOR].copy(name)
+    inspectTangoColors = InspectColors[_DEFAULTCOLOR].copy(name)
 
     # initialize prompt with default tango colors
     promptTangoColors.colors.in_prompt  = InputTermColors.Purple
@@ -725,7 +738,7 @@ def __build_color_scheme(ip, name):
 
     if ip.IP.isthreaded:
         TBThreadedColors = ip.IP.sys_excepthook.color_scheme_table
-        TBThreadedTangoColors = TBThreadedColors['Linux'].copy(name)
+        TBThreadedTangoColors = TBThreadedColors[_DEFAULTCOLOR].copy(name)
         ret["TBThreaded"] = TBThreadedColors, TBThreadedTangoColors
     return ret
 
@@ -1260,7 +1273,7 @@ def load_config(config):
     # InteractiveShell
     # ------------------------------------
     i_shell = config.InteractiveShell
-    i_shell.colors = 'Linux'
+    i_shell.colors = _DEFAULTCOLOR
 
     # ------------------------------------
     # PromptManager (ipython >= 0.12)
