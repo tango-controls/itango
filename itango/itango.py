@@ -58,6 +58,7 @@ _TANGO_ERR = "__tango_error"
 _PYTHON_ERR = "__python_error"
 _tango_init = False
 
+
 def _get_ipython_major_version():
     ver = None
     if hasattr(IPython, "Release"):
@@ -66,11 +67,13 @@ def _get_ipython_major_version():
         ver = IPython.release.version.split(".")
     return int(ver[0]) if ver else 0
 
+
 if _get_ipython_major_version() >= 5:
     _DEFAULTCOLOR = 'Neutral'
 else:
     _DEFAULTCOLOR = 'Linux'
-    
+
+
 # IPython utilities
 
 def get_pylab_mode():
