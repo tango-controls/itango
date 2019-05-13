@@ -30,9 +30,12 @@ from IPython.core.page import page
 from IPython.core.interactiveshell import InteractiveShell
 from IPython.terminal.ipapp import launch_new_instance
 
-try:     # IPython 4.x
+from packaging import version
+limit_version = version.parse('4.0.0')
+ipython_version = version.parse(IPython.__version__)
+if ipython_version >= limit_version : # IPython >= 4.x
     from traitlets.config.application import Application
-except:  # IPython < 4.x
+else:  # IPython < 4.x
     from IPython.config.application import Application
 
 import tango
