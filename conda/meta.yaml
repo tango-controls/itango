@@ -1,0 +1,50 @@
+{% set data = load_setup_py_data(setup_file="../setup.py",
+  from_recipe_dir=True) %}
+
+package:
+  name: {{data.get('name').lower().replace(' ', '_')}}
+  version: {{data.get('version')}}
+
+source:
+  path: ..
+
+build:
+  number: {{environ.get('BUILD_NUMBER',0)}}
+  noarch: python
+  script: '{{PYTHON}} setup.py install --single-version-externally-managed
+    --record=record.txt'
+
+  string: 'py_{{ PKG_BUILDNUM }}_{{GIT_DESCRIBE_HASH}}'
+  entry_points: {{data.get('entry_points', {}).get('console_scripts', [])}}
+
+requirements:
+  host:
+    - python
+    - setuptools
+  run:
+    - python
+    {% for dep in data['install_requires'] %}
+    - {{ dep.lower()}}
+    {% endfor %}
+
+
+test:
+  requires:
+    - python
+    {% for dep in data['install_requires'] %}
+    - {{ dep.lower()}}
+    {% endfor %}
+  imports:
+    {% for pack in data['packages'] %}
+    - {{pack}}
+    {% endfor %}
+
+about:
+  home: {{ data.get('url')}}
+  license: {{ data.get('license')}}
+  summary: {{ data.get('description')}}
+  author: {{ data.get('author')}}
+  description: {{ data.get('description')}}
+
+
+
